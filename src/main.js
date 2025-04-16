@@ -1,49 +1,43 @@
 import { createApp } from 'vue'
-
+import router from './router/index.js'
 import PrimeVue from 'primevue/config'
-import App from './App.vue'
-import {createRouter, createWebHashHistory} from 'vue-router'
-import Demo1 from './components/Demo1.vue'
-import Demo2 from './components/Demo2.vue'
-import User from './components/User.vue'
-import Button from "primevue/button";
-import Aura from '@primeuix/themes/aura';
+import App from './views/App.vue'
+// import { createRouter, createWebHashHistory } from 'vue-router'
+// import Demo1 from './components/Demo1.vue'
+// import Demo2 from './components/Demo2.vue'
+// import User from './components/User.vue'
+// import Button from 'primevue/button'
+import Aura from '@primeuix/themes/aura'
+import { createPinia } from 'pinia'
+// import { useUserStore } from './stores/userStore' // 假设你定义了一个 userStore
 
-
-// 注册插件
+//创建大菠萝
+const pinia = createPinia()
+//创建App根组件
+const app = createApp(App)
+//使用大菠萝，路由和UI库
 app.use(pinia)
 app.use(router)
-
-
-// 初始化用户状态
-const initializeApp = async () => {
-    try {
-        // 获取用户存储
-        const userStore = pinia.state.value.user
-        if (userStore && userStore.initialize) {
-            await userStore.initialize()
-        }
-    } catch (error) {
-        console.error('应用初始化失败:', error)
-    } finally {
-        // 挂载应用
-        app.mount('#app')
-    }
-}
-
-// 启动应用
-initializeApp()
-
-const router = createRouter({
-    history: createWebHashHistory(),
-    routes: routes
-})
-const app = createApp(App);
 app.use(PrimeVue, {
     theme: {
         preset: Aura
     },
     ripple: true
-});
-app.use(router).mount('#app');
+})
+
+// 初始化用户状态并挂载应用
+// const initializeApp = async () => {
+//     try {
+//         const userStore = useUserStore()
+//         if (userStore.initialize) {
+//             await userStore.initialize()
+//         }
+//     } catch (error) {
+//         console.error('应用初始化失败:', error)
+//     } finally {
+        app.mount('#app')
+//     }
+// }
+
+// initializeApp()
 
