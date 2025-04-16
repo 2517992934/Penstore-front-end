@@ -34,7 +34,7 @@ const logout = () => {
       </span>
     </div>
     <div class="logo">
-      <img src="/images/logo.png" alt="peiahuishi">
+<!--      <img src="/images/logo.png" alt="peiahuishi">-->
     </div>
     <div class="utility">
       <a :href="sellerUrl">卖家中心</a>

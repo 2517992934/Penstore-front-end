@@ -1,6 +1,5 @@
-// import './assets/main.css'
-
 import { createApp } from 'vue'
+
 import PrimeVue from 'primevue/config'
 import App from './App.vue'
 import {createRouter, createWebHashHistory} from 'vue-router'
@@ -10,11 +9,30 @@ import User from './components/User.vue'
 import Button from "primevue/button";
 import Aura from '@primeuix/themes/aura';
 
-const routes = [
-    {path:'/demo1',component: Demo1},
-    {path:'/demo2',component: Demo2},
-    {path:'/user/:username/:id',component: User},
-]
+
+// 注册插件
+app.use(pinia)
+app.use(router)
+
+
+// 初始化用户状态
+const initializeApp = async () => {
+    try {
+        // 获取用户存储
+        const userStore = pinia.state.value.user
+        if (userStore && userStore.initialize) {
+            await userStore.initialize()
+        }
+    } catch (error) {
+        console.error('应用初始化失败:', error)
+    } finally {
+        // 挂载应用
+        app.mount('#app')
+    }
+}
+
+// 启动应用
+initializeApp()
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -28,3 +46,4 @@ app.use(PrimeVue, {
     ripple: true
 });
 app.use(router).mount('#app');
+
