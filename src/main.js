@@ -1,21 +1,31 @@
-// import './assets/main.css'
-
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
-import {createRouter, createWebHashHistory} from 'vue-router'
-import Demo1 from '@/compoments/Demo1.vue'
-import Demo2 from '@/compoments/Demo2.vue'
-import User from '@/compoments/User.vue'
+import router from './router'
 
-const routes = [
-    {path:'/demo1',component: Demo1},
-    {path:'/demo2',component: Demo2},
-    {path:'/user/:username/:id',component: User},
-]
+// 初始化应用
+const app = createApp(App)
+const pinia = createPinia()
 
-const router = createRouter({
-    history: createWebHashHistory(),
-    routes: routes
-})
+// 注册插件
+app.use(pinia)
+app.use(router)
 
-createApp(App).use(router).mount('#app')
+// 初始化用户状态
+const initializeApp = async () => {
+    try {
+        // 获取用户存储
+        const userStore = pinia.state.value.user
+        if (userStore && userStore.initialize) {
+            await userStore.initialize()
+        }
+    } catch (error) {
+        console.error('应用初始化失败:', error)
+    } finally {
+        // 挂载应用
+        app.mount('#app')
+    }
+}
+
+// 启动应用
+initializeApp()

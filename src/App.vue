@@ -1,47 +1,48 @@
-<script>
-import HelloWorld from '@/compoments/HelloWorld.vue'
-import TheWelcome from '@/compoments/TheWelcome.vue'
-export default {
-  name: 'App',
-  components: {}
-}
+<script setup>
+import { RouterView } from 'vue-router'
+import Header from '@/compoments/Header.vue'
 </script>
 
 <template>
-  <h1>HelloWorld</h1>
-  <p>
-    <router-link to="/demo1">页面1</router-link>
-    <router-link to="/demo2">页面2</router-link>
-    <router-view></router-view>
-    <a href="/home.html">点击跳转主页</a>
-  </p>
+  <div class="app-container">
+    <!-- 头部导航 -->
+    <Header />
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+      <RouterView /> <!-- 路由内容显示区域 -->
+    </main>
+
+    <!-- 页脚（可选） -->
+    <footer class="app-footer">
+      <p>© 2024 Your Company. All rights reserved.</p>
+    </footer>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style>
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.app-footer {
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #dee2e6;
 }
 </style>
