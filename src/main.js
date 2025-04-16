@@ -1,15 +1,19 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
-import router from './router'
 
-// 初始化应用
-const app = createApp(App)
-const pinia = createPinia()
+import PrimeVue from 'primevue/config'
+import App from './App.vue'
+import {createRouter, createWebHashHistory} from 'vue-router'
+import Demo1 from './components/Demo1.vue'
+import Demo2 from './components/Demo2.vue'
+import User from './components/User.vue'
+import Button from "primevue/button";
+import Aura from '@primeuix/themes/aura';
+
 
 // 注册插件
 app.use(pinia)
 app.use(router)
+
 
 // 初始化用户状态
 const initializeApp = async () => {
@@ -29,3 +33,17 @@ const initializeApp = async () => {
 
 // 启动应用
 initializeApp()
+
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: routes
+})
+const app = createApp(App);
+app.use(PrimeVue, {
+    theme: {
+        preset: Aura
+    },
+    ripple: true
+});
+app.use(router).mount('#app');
+
