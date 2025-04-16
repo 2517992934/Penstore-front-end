@@ -19,10 +19,19 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        home: resolve(__dirname, 'home.html'),
+
       }
 
+    }
+  },
+  server: {
+    proxy: {
+      // 将所有以 /api 开头的请求转发到 8080 端口
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '') // 移除 /api 前缀
+      }
     }
   }
 })

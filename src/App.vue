@@ -1,6 +1,6 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import HelloWorld from '@/compoments/HelloWorld.vue'
+import TheWelcome from '@/compoments/TheWelcome.vue'
 export default {
   name: 'App',
   components: {}
