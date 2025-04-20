@@ -1,28 +1,30 @@
-import axios from "axios";
-import qs from "qs"; // 正确引入 qs 库
+import axios from "axios"
+import qs from "qs"
 
 const request = axios.create({
-    baseURL:'/api', // 确保环境变量已配置
-    timeout: 10000,
-});
+    baseURL: '/api', // 与代理标识一致，触发代理转发
+    timeout: 10000
+})
 
+// 请求拦截器
 request.interceptors.request.use(
     (config) => {
-        if (config.method?.toLowerCase() === "post") {
-            config.data = qs.stringify(config.data); // 使用 qs 序列化数据
-            config.headers["Content-Type"] = "application/x-www-form-urlencoded"; // 必须设置请求头
+        if (config.method?.toLowerCase() === 'post') {
+            config.data = qs.stringify(config.data)
+            config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         }
-        return config;
+        return config
     },
     (error) => Promise.reject(error)
-);
+)
 
+// 响应拦截器
 request.interceptors.response.use(
     (response) => response.data,
     (error) => {
-        console.error("请求错误:", error.message);
-        return Promise.reject(error);
+        const message = error.response?.data?.message || '请求失败'
+        return Promise.reject(message)
     }
-);
+)
 
-export default request;
+export default request

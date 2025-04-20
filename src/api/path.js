@@ -1,10 +1,7 @@
-// src/api/path.js
-const BASE_URL = 'http://localhost:8080'; // 本地 Spring Boot 地址
-
+// 只维护路径片段（无需包含 baseURL）
 export const API_PATH = {
     user: {
-        LOGIN: `${BASE_URL}/user/login`, // 根据实际接口路径调整
-
-    },
-
-};
+        LOGIN: '/user/login',
+        GET_INFO: '/user/info'
+    }
+}
