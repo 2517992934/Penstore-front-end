@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import router from './router/index.js'
 import PrimeVue from 'primevue/config'
 import App from './views/App.vue'
+
 // import { createRouter, createWebHashHistory } from 'vue-router'
 // import Demo1 from './components/Demo1.vue'
 // import Demo2 from './components/Demo2.vue'
@@ -37,7 +38,7 @@ app.use(VueAxios, axios)
 //     } catch (error) {
 //         console.error('应用初始化失败:', error)
 //     } finally {
-        app.mount('#app')
+app.mount('#app')
 //     }
 // }
 

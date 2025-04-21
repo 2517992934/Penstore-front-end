@@ -4,9 +4,24 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { resolve } from 'path'
+let timeStamp = new Date().getTime();
+
 
 // https://vite.dev/config/
 export default defineConfig({
+  configureWebpack: {
+    output: { // 输出 添加时间戳到打包编译后的js文件名称
+      filename: `static/js/js[name].${timeStamp}.js`,
+      chunkFilename: `static/js/chunk.[id].${timeStamp}.js`,
+    }
+  },
+  css: {
+    extract: { // 添加时间戳到打包后css文件名称
+      filename: `static/css/[name].${timeStamp}.css`,
+      chunkFilename: `static/css/chunk.[id].${timeStamp}.css`,
+    }
+  },
+
   plugins: [
     vue(),
     vueDevTools(),

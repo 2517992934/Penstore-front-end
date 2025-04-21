@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import Login from "@/views/login.vue";
+import MyPage from '@/compoments/MyPage.vue';
 
 const routes = [
-    { path: '/login', component: Login }
+    { path: '/login', component: Login },
+    { path: '/mypage', component: MyPage }
 ]
 
 const router = createRouter({
