@@ -1,6 +1,6 @@
-import {createApp} from "vue";
+import { createApp } from "vue";
 import Goods from "@/views/Goods.vue";
-import {createPinia} from "pinia";
+import { createPinia } from "pinia";
 import router from "@/router/index.js";
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";

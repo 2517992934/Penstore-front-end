@@ -36,7 +36,11 @@ export default defineConfig({
       input: {
         home: resolve(__dirname, 'index.html'),
         goods: resolve(__dirname, 'goods.html'),
+
+        user: resolve(__dirname, 'user.html'),
+
         cart: resolve(__dirname, 'cart.html'),
+
 
       }
 
