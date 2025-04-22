@@ -1,5 +1,52 @@
-<template>
 
+<!--<template>-->
+
+<!--  <div v-for="item in cartItems" :key="item.id">-->
+<!--    {{ item.id }}-->
+<!--  </div>-->
+<!--</template>-->
+<template>
+  <div>
+
+      <div class="table">
+        <table id="cartTable">
+          <thead>
+          <tr>
+            <th><input type="checkbox" class="product-checkbox" id="selectAll"/>全选</th>
+            <th>商品名称</th>
+            <th>描述</th>
+            <th class="money">单价</th>
+            <th class="amount">数量</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="item in cartItems" :key="item.id" :id="`product_${item.id}`">
+            <td>
+              <input
+                  type="checkbox"
+                  class="product-checkbox"
+                  :value="item.id"
+                  v-model="selectedItems"
+              />
+            </td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td class="money">¥{{ item.price.toFixed(2) }}</td>
+            <td class="amount">
+              <span :id="item.id" class="quantity">{{ item.quantity }}</span>
+            </td>
+            <td>
+              <button type="button" @click="modifyQuantity(item.id, 'increase')">增加</button>
+              <button type="button" @click="modifyQuantity(item.id, 'decrease')">减少</button>
+              <button type="button" @click="deleteItem(item.id)">删除</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+  </div>
 </template>
 
 <script setup  >
@@ -39,21 +86,10 @@ onMounted(() => {
   fetchCart();
 });
 
-// 全选相关逻辑
-const selectAll = ref(false)
-const isIndeterminate = computed(() => {
-  const selectedCount = cartItems.value.filter(item => item.selected).length
-  return selectedCount > 0 && selectedCount < cartItems.value.length
-})
 
-const handleSelectAll = (val) => {
-  cartItems.value.forEach(item => {
-    item.selected = val
-  })
-  updateTotalPrice()
-}
 
 </script>
+
 
 <style scoped>
 .cart-container {
