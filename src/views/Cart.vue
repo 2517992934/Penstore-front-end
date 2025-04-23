@@ -3,6 +3,7 @@
     <div class="table">
       <table id="cartTable">
         <thead>
+        <h1>{{message}}</h1>
         <tr>
           <th>
             <input
@@ -47,12 +48,7 @@
       </table>
     </div>
 
-    <div class="checkout-area">
-      <div class="total-price">
-        总计：¥{{ totalPrice.toFixed(2) }}
-      </div>
-      <button class="checkout-btn" @click="handleCheckout">去结算</button>
-    </div>
+   
 
 </template>
 
@@ -72,6 +68,7 @@ const totalPrice = ref(0)
 const allChosen = ref(false)
 const router = useRouter()
 const cartStore = useCartStore()
+const message = ref('')
 
 
 // 初始化加载购物车
@@ -91,7 +88,8 @@ const fetchCart = async () => {
         response.data.items.filter(item => item.isChosen)
     )
   } catch (error) {
-    ElMessage.error('加载购物车失败')
+   message.value = "购物车为空"
+
   }
 }
 
