@@ -51,7 +51,7 @@
       <div class="total-price">
         总计：¥{{ totalPrice.toFixed(2) }}
       </div>
-      <button class="checkout-btn">去结算</button>
+      <button class="checkout-btn" @click="handleCheckout">去结算</button>
     </div>
 
 </template>
@@ -60,12 +60,19 @@
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import request from '@/utils/request'
+import { useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
+
 
 // 响应式数据
 const cartItems = ref([])
 const selectedItems = ref([])
 const totalPrice = ref(0)
 const allChosen = ref(false)
+const router = useRouter()
+const cartStore = useCartStore()
+
 
 // 初始化加载购物车
 const fetchCart = async () => {
@@ -80,6 +87,9 @@ const fetchCart = async () => {
     selectedItems.value = response.data.items
         .filter(item => item.isChosen)
         .map(item => item.id)
+    cartStore.updateSelected(
+        response.data.items.filter(item => item.isChosen)
+    )
   } catch (error) {
     ElMessage.error('加载购物车失败')
   }
@@ -124,7 +134,7 @@ const handleItemSelect = async (productId) => {
 // 数量修改
 const modifyQuantity = async (productId, operation) => {
   try {
-    const response = await request.put(`/cart/items/${productId}/quantity`, {
+    const response = await request.put(`/cart/items/${productId}/quantity`, null,{
       params: {
         id: "af306b72-15e6-496d-a68e-a4f3772dde0f",
         operation }
@@ -132,10 +142,11 @@ const modifyQuantity = async (productId, operation) => {
 
     // 本地更新
     const item = cartItems.value.find(i => i.id === productId)
-    if (item) {
-      item.quantity = response.data.quantity
-      totalPrice.value = response.data.totalPrice
-    }
+    // if (item) {
+    //   item.quantity = response.data.quantity
+    //   totalPrice.value = response.data.totalPrice
+    // }
+    await fetchCart()
   } catch (error) {
     ElMessage.error('数量修改失败')
     await fetchCart()
@@ -160,12 +171,26 @@ const deleteItem = async (productId) => {
     totalPrice.value = cartItems.value.reduce(
         (sum, item) => sum + (item.price * item.quantity), 0
     )
+    cartStore.setSelectedItems(
+        response.data.items.filter(item => item.isChosen)
+    )
   } catch (error) {
     if (error !== 'cancel') {
       ElMessage.error('删除失败')
       await fetchCart()
     }
   }
+}
+const handleCheckout = () => {
+  if (selectedItems.value.length === 0) {
+    ElMessage.warning('请选择要结算的商品')
+    return
+  }
+
+  router.push({
+    name: 'Order',
+
+  })
 }
 
 // 初始化加载
