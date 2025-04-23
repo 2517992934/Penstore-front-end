@@ -25,7 +25,7 @@ const activeTab = shallowRef(Cart) // 默认显示购物车
       </button>
     </div>
 
-    <!-- 动态组件容器 -->
+
     <component :is="activeTab" />
   </div>
 </template>
