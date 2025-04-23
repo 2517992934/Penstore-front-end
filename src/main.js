@@ -27,6 +27,7 @@ app.use(PrimeVue, {
     },
     ripple: true
 })
+
 app.use(VueAxios, axios)
 // 初始化用户状态并挂载应用
 // const initializeApp = async () => {
