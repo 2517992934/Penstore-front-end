@@ -34,12 +34,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        home: resolve(__dirname, 'index.html'),
+        // home: resolve(__dirname, 'index.html'),
         goods: resolve(__dirname, 'goods.html'),
 
         user: resolve(__dirname, 'user.html'),
 
         cart: resolve(__dirname, 'cart.html'),
+
+        home: resolve(__dirname, 'home.html'),
 
 
       }
@@ -49,10 +51,10 @@ export default defineConfig({
   //跨域请求
   server: {
     proxy: {
-      '/api': {
+      '/ai': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
+        rewrite: path => path.replace(/^\/ai/, '')
       }
     }
   }

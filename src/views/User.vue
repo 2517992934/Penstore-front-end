@@ -77,9 +77,10 @@ import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
+import request from '@/utils/request';
 
 const router = useRouter()
-const userStore = useUserStore()
+const userUserStore = useUserStore()
 
 // 登录表单数据
 const loginForm = reactive({
@@ -112,8 +113,14 @@ const handleLogin = async () => {
     loginError.value = ''
     loading.value = true
     try {
-        await userStore.login(loginForm)
-        router.push('/')
+        // await userStore.login(loginForm)
+       const response=await request.post('/api/login',loginForm,{
+         headers:{
+
+         }
+       });
+      await userUserStore.myget({})
+      window.location.href = '/home.html';
     } catch (error) {
         loginError.value = error.response?.data?.message || '登录失败'
     } finally {

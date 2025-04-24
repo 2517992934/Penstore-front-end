@@ -3,7 +3,7 @@
     <div class="table">
       <table id="cartTable">
         <thead>
-        <h1>{{message}}</h1>
+
         <tr>
           <th>
             <input
@@ -59,6 +59,7 @@ import request from '@/utils/request'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/user'
 
 
 // 响应式数据
@@ -69,14 +70,19 @@ const allChosen = ref(false)
 const router = useRouter()
 const cartStore = useCartStore()
 const message = ref('')
+const userUserStore = useUserStore()
+let id=ref('')
 
 
 // 初始化加载购物车
 const fetchCart = async () => {
   try {
+    const myget=await userUserStore.myget({})
     const response = await request.get('/cart', {
-      params: { id: "af306b72-15e6-496d-a68e-a4f3772dde0f" }
+      params: { id: myget.id }
     })
+    id=myget.id;
+
 
     cartItems.value = response.data.items
     totalPrice.value = response.data.totalPrice
@@ -101,7 +107,7 @@ const handleSelectAll = async () => {
         cartItems.value.map(item =>
             request.put(`/cart/items/${item.id}/chosen`, null, {
               params: {
-                id: "af306b72-15e6-496d-a68e-a4f3772dde0f",
+                id: id,
                 isChosen: !allChosen.value }
             })
         )
@@ -119,7 +125,7 @@ const handleItemSelect = async (productId) => {
     const isSelected = selectedItems.value.includes(productId)
     await request.put(`/cart/items/${productId}/chosen`,null,{
       params: {
-        id: "af306b72-15e6-496d-a68e-a4f3772dde0f",
+        id: id,
         isChosen: isSelected
       }
     })
@@ -134,7 +140,7 @@ const modifyQuantity = async (productId, operation) => {
   try {
     const response = await request.put(`/cart/items/${productId}/quantity`, null,{
       params: {
-        id: "af306b72-15e6-496d-a68e-a4f3772dde0f",
+        id: id,
         operation }
     })
 
@@ -160,7 +166,7 @@ const deleteItem = async (productId) => {
     })
 
     await request.delete(`/cart/items/${productId}`, {
-      params: { id: "af306b72-15e6-496d-a68e-a4f3772dde0f" }
+      params: { id: id }
     })
 
     // 本地更新
