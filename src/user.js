@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import router from './router/index.js'
 import PrimeVue from 'primevue/config'
-import User from '@views/User.vue'
+import User from './views/User.vue'
 
 // import { createRouter, createWebHashHistory } from 'vue-router'
 // import Demo1 from './components/Demo1.vue'
