@@ -30,10 +30,7 @@
                         <div class="info-item">
                             <span class="label">默认地址：</span>
                             <span class="value">{{ user?.address || '未设置' }}</span>
-                            <div class="address-update">
-                                <InputText v-model="newAddress" placeholder="输入新地址" />
-                                <Button @click="submitAddress" label="更新地址" severity="secondary" />
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -60,6 +57,11 @@
                     <br />
                     <Button type="submit" raised>更新信息</Button>
                 </form>
+
+                <div class="address-update">
+                    <InputText v-model="newAddress" placeholder="输入新地址" />
+                    <Button @click="submitAddress" label="更新地址" severity="secondary" />
+                </div>
             </Drawer>
 
             <!-- 订单面板 -->
@@ -178,7 +180,7 @@ const formatDate = (timestamp) => {
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    background-image: url('/public/background.jpg');
+    background-image: url('/public/images/background.jpg');
     /* 修改为你的图片路径 */
     background-size: cover;
     background-position: center;

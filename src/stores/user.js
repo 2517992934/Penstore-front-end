@@ -1,43 +1,39 @@
 import { defineStore } from 'pinia'
-import router from '@/router'
-import { userAPI } from '@/api'
+import { ref } from 'vue'
+import router from '../router'
 
-export const useUserStore = defineStore('user', {
-    state: () => ({
-        id: null,
-        username: '',
-        token: localStorage.getItem('token') || ''
-    }),
+export const useUserStore = defineStore('user', () => {
+    const user = ref(null)
+    const isAuthenticated = ref(false)
 
-    actions: {
-        // 初始化时尝试获取用户信息
-        async initialize() {
-            if (this.token) {
-                try {
-                    const res = await userAPI.getUserInfo()
-                    this.id = res.data.id
-                    this.username = res.data.username
-                } catch (err) {
-                    this.clearUser()
-                }
+    const login = async (credentials) => {
+        try {
+            console.log('发送登录请求:', credentials)
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials)
+            })
+            console.log('收到响应:', response)
+            if (response.ok) {
+                const data = await response.json()
+                console.log('收到响应:', response)
+                user.value = data
+                isAuthenticated.value = true
+                localStorage.setItem('token', data.access_token)
+                router.push('/home')
             }
-        },
-
-        // 登录操作
-        async login(credentials) {
-            const res = await userAPI.login(credentials)
-            this.token = res.data.token
-            this.id = res.data.user.id
-            this.username = res.data.user.username
-            localStorage.setItem('token', this.token)
-            router.push('/')
-        },
-
-        // 退出登录
-        clearUser() {
-            this.$reset()
-            localStorage.removeItem('token')
-            router.push('/login')
+        } catch (error) {
+            console.error('登录失败:', error)
+            throw error
         }
     }
+
+    const logout = async () => {
+        user.value = null
+        isAuthenticated.value = false
+        localStorage.removeItem('token')
+    }
+
+    return { user, isAuthenticated, login, logout }
 })
