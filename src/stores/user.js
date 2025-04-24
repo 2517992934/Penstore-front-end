@@ -1,39 +1,37 @@
+// stores/user.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import router from '../router'
+import request from '@/utils/request'
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref(null)
-    const isAuthenticated = ref(false)
+    // 用户数据存储
+    const id = ref('')
+    const username = ref('')
+    const email = ref('')
 
-    const login = async (credentials) => {
-        try {
-            console.log('发送登录请求:', credentials)
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(credentials)
-            })
-            console.log('收到响应:', response)
-            if (response.ok) {
-                const data = await response.json()
-                console.log('收到响应:', response)
-                user.value = data
-                isAuthenticated.value = true
-                localStorage.setItem('token', data.access_token)
-                router.push('/home')
+    // 数据设置方法
+    const setUserData = (userData) => {
+        id.value = userData.id || ''
+        username.value = userData.username || ''
+        email.value = userData.email || ''
+    }
+
+    // 登录方法（纯逻辑）
+    const myget = async () => {
+        const response =await request.post('/api/login/get',null,{
+            headers:{
+
             }
-        } catch (error) {
-            console.error('登录失败:', error)
-            throw error
-        }
+        });
+        setUserData(response.data)
+        return response.data
     }
 
-    const logout = async () => {
-        user.value = null
-        isAuthenticated.value = false
-        localStorage.removeItem('token')
+    return {
+        id,
+        username,
+        email,
+        myget,
+        setUserData
     }
-
-    return { user, isAuthenticated, login, logout }
 })
