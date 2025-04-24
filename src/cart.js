@@ -1,5 +1,6 @@
 import {createApp} from "vue";
-import Cart from "@/views/cart.vue";
+// import Cart from "@/views/cart.vue";
+import Cart from "@/views/CartPage.vue"
 import {createPinia} from "pinia";
 import router from "@/router/index.js";
 import PrimeVue from "primevue/config";
