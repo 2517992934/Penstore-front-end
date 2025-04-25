@@ -2,7 +2,7 @@ import axios from "axios"
 import qs from "qs"
 
 const request = axios.create({
-    baseURL: '/ai', // 与代理标识一致，触发代理转发
+    baseURL: '/api', // 与代理标识一致，触发代理转发
     timeout: 10000
 })
 
