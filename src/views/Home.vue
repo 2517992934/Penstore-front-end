@@ -10,9 +10,7 @@
           你好，<a href="/logsign">请登录</a>
         </span>
       </div>
-      <div class="logo">
-        <img src="../assets/logo.png" alt="peiahuishi">
-      </div>
+
       <div class="utility">
         <a href="/seller">卖家中心</a>
         <a href="/cart">购物车</a>
@@ -28,12 +26,19 @@
     </div>
 
     <div class="container">
-      <div class="search-box">
-        <form @submit.prevent="searchGoods">
-          <input type="text" v-model="searchQuery" placeholder="搜索商品...">
-          <button type="submit">搜索</button>
-        </form>
-      </div>
+<!--      <div class="search-box">-->
+
+<!--        <input type="text" v-model="searchQuery" placeholder="搜索商品...">-->
+
+
+<!--      </div>-->
+<!--      <button-->
+<!--          @click="searchGoods"-->
+<!--          type="button"-->
+<!--          :disabled="!searchQuery.trim()"-->
+<!--      >-->
+<!--        搜索-->
+<!--      </button>-->
 
       <div class="categories">
         <a href="/goods/1" class="category">书写</a>
@@ -68,6 +73,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
+import router from "@/router/index.js";
 
 const userStore = useUserStore();
 const user = userStore.user;
@@ -77,9 +83,20 @@ const errorMessage = ref('');
 
 const searchGoods = () => {
   // 搜索结果逻辑
-  console.log('搜索商品:', searchQuery.value);
-  // 实现搜索逻辑
-};
+  // 添加控制台调试
+  if (!searchQuery.value.trim()) return;
+
+  router.push({
+    name: 'GoodList',
+
+    query: {
+      searchQuery: searchQuery.value.trim(),
+      _t: Date.now() // 防止缓存
+    }
+  });
+
+}
+
 </script>
 
 <!-- Home.vue 样式优化 -->

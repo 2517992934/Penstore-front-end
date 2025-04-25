@@ -43,6 +43,9 @@ export default defineConfig({
 
         home: resolve(__dirname, 'home.html'),
 
+        mypage:resolve(__dirname, 'home.html'),
+
+
 
       }
 
@@ -56,6 +59,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       }
-    }
+    },
   }
 })

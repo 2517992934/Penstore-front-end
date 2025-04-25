@@ -120,7 +120,7 @@ const handleLogin = async () => {
          }
        });
       await userUserStore.myget({})
-      window.location.href = '/home.html';
+      window.location.href = 'http://localhost:5173/\n';
     } catch (error) {
         loginError.value = error.response?.data?.message || '登录失败'
     } finally {

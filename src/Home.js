@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import Home from "./views/HomeView.vue";
+import Home from "./views/mainpage.vue";
 import { createPinia } from "pinia";
 import router from "@/router/index.js";
 import PrimeVue from "primevue/config";
