@@ -43,6 +43,9 @@ export default defineConfig({
 
         home: resolve(__dirname, 'home.html'),
 
+        mypage:resolve(__dirname, 'home.html'),
+
+
 
       }
 
@@ -51,11 +54,11 @@ export default defineConfig({
   //跨域请求
   server: {
     proxy: {
-      '/ai': {
+      '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/ai/, '')
+        rewrite: path => path.replace(/^\/api/, '')
       }
-    }
+    },
   }
 })

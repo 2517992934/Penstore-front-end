@@ -18,17 +18,15 @@
       <header class="header">
         <div class="username">
           <template v-if=id>
-            <span>欢迎, <router-link :to="`/mypage/${id}`">{{username }}</router-link></span>
+            <span>欢迎, <router-link :to="`/mypage`">{{username }}</router-link></span>
             <a @click="logout">退出登录</a>
           </template>
           <template v-else>
-            <span>你好， <router-link to="/login">请登录</router-link></span>
+            <span>你好， <router-link to="/Login">请登录</router-link></span>
           </template>
         </div>
 
-        <div class="logo">
-          <img :src="logoImage" alt="peiahuishi">
-        </div>
+
 
         <div class="utility">
           <router-link v-if="id" :to="`/seller/${id}`">卖家中心</router-link>
@@ -40,12 +38,12 @@
       <!-- 主体内容 -->
 
       <div class="container">
-        <div class="search-box">
-          <form @submit.prevent="searchGoods">
-            <input type="text" v-model="searchQuery" placeholder="搜索商品...">
-            <button type="submit">搜索</button>
-          </form>
-        </div>
+<!--        <div class="search-box">-->
+<!--          <form @submit.prevent="searchGoods">-->
+<!--            <input type="text" v-model="searchQuery" placeholder="搜索商品...">-->
+<!--            <button type="submit">搜索</button>-->
+<!--          </form>-->
+<!--        </div>-->
 
         <div class="categories">
           <a href="/goods/1" class="category">书写</a>

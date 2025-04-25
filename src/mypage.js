@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import Goods from "@/views/Goods.vue";
+import Mypage from "@/compoments/MyPage.vue";
 import { createPinia } from "pinia";
 import router from "@/router/index.js";
 import PrimeVue from "primevue/config";
@@ -9,7 +9,7 @@ import axios from "axios";
 
 // axios.defaults.baseURL = "http://localhost:8080";
 const pinia = createPinia()
-const goods = createApp(Goods)
+const goods = createApp(Mypage)
 goods.use(pinia)
 goods.use(router)
 goods.use(PrimeVue, {
