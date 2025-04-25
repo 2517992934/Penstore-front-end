@@ -60,6 +60,7 @@
         <div class="address-update">
           <InputText v-model="newAddress" placeholder="输入新地址" />
           <Button @click="submitAddress" label="更新地址" severity="secondary" />
+
         </div>
       </Drawer>
 
@@ -103,14 +104,16 @@ import FloatLabel from 'primevue/floatlabel'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useUserStore } from '@/stores/user'
-import request from "@/utils/request.js";
-const useUserstore = useUserStore()
+
+const myget = useUserStore()
+
 const visibleRight = ref(false)
 const user = ref(null)
 const orders = ref([])
 const activeTab = ref(0)
 const newAddress = ref('')
 const loading = ref(false);
+
 const id=ref('')
 const username = ref('')
 const email = ref('')
@@ -172,6 +175,7 @@ onMounted(async () => {
   await getmessage();
   fetchOrders();
 
+
 });
 // 初始化数据加载
 // 修改后的初始化加载
@@ -197,6 +201,7 @@ onMounted(async () => {
 
 // 地址更新逻辑
 const submitAddress = async () => {
+
   try {
     // 1. 创建表单编码参数
     const params = new URLSearchParams()
@@ -218,6 +223,7 @@ const submitAddress = async () => {
   } catch (error) {
     console.error('地址更新失败:', error)
   }
+
 }
 
 // 用户信息更新逻辑
