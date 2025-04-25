@@ -21,16 +21,15 @@
                         <h2>账户信息</h2>
                         <div class="info-item">
                             <span class="label">用户名：</span>
-                            <span class="value">{{ user?.username || '未设置' }}</span>
+                            <span class="value">{{ userForm.username || '未登录' }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="label">注册时间：</span>
-                            <span class="value">{{ formatDate(user?.createdAt) }}</span>
+                            <span class="label">用户邮箱：</span>
+                            <span class="value">{{ userForm.email || '未登录' }}</span>
                         </div>
                         <div class="info-item">
                             <span class="label">默认地址：</span>
-                            <span class="value">{{ user?.address || '未设置' }}</span>
-
+                            <span class="value">{{ userForm.address || '未设置' }}</span>
                         </div>
                     </div>
                 </div>
@@ -73,9 +72,21 @@
                         <Column field="date" header="日期"></Column>
                         <Column field="status" header="状态"></Column>
                     </DataTable>
+                    <div v-if="orders.length === 0" class="no-orders">
+                        暂无订单记录
+                    </div>
                 </div>
             </div>
-
+            <!-- <div v-show="activeTab === 0" class="tab-panel">
+                <h2>您的订单:</h2>
+                <div class="card">
+                    <DataTable :value="orders" tableStyle="min-width: 50rem">
+                        <Column field="id" header="订单号"></Column>
+                        <Column field="date" header="日期"></Column>
+                        <Column field="status" header="状态"></Column>
+                    </DataTable>
+                </div>
+            </div> -->
             <router-link to="/home" class="home-button">返回首页</router-link>
         </div>
     </div>
@@ -91,39 +102,105 @@ import Password from 'primevue/password'
 import FloatLabel from 'primevue/floatlabel'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-
+import { useUserStore } from '@/stores/user'
+const myget = useUserStore()
 const visibleRight = ref(false)
 const user = ref(null)
 const orders = ref([])
 const activeTab = ref(0)
 const newAddress = ref('')
+const loading = ref(false);
 
 const userForm = reactive({
-    username: '',
+    username: myget.username,
     password: '',
+    email: myget.email,
     avatar: null
 })
 
-// 初始化数据加载
-onMounted(async () => {
+const fetchOrders = async () => {
     try {
-        const [userRes, ordersRes] = await Promise.all([
-            axios.get('/api/mypage/changeInfo'), // 假设用户信息获取端点
-            axios.get('/api/mypage/orders')//需要用户ID
-        ])
-        user.value = userRes.data
-        orders.value = ordersRes.data
+        loading.value = true
+        const response = await axios.get('/api/mypage/orders', {
+            params: {
+                userId: '45c4c2cb-4f2c-44f5-839a-92c8f900-3e12-43bb-ba43-7c23e5a4aea9' // 确保 store 中有有效用户ID
+            }
+        })
+
+        // 数据格式验证
+        if (!Array.isArray(response.data)) {
+            throw new Error('接口返回数据格式错误')
+        }
+
+        // 简化后的数据转换
+        orders.value = response.data.map(order => ({
+            id: order.order_id,
+            date: order.created_at ? formatDate(order.created_at) : '-',
+            status: convertStatus(order.order_status)
+        }))
+
     } catch (error) {
-        console.error('数据加载失败:', error)
+        console.error('数据加载失败:', error.response?.data || error.message)
+    } finally {
+        loading.value = false
     }
-})
+}
+
+
+// 状态转换
+const convertStatus = (status) => {
+    const statusMap = {
+        'pending': '待付款',
+        'shipped': '已发货',
+        'completed': '已完成'
+    }
+    return statusMap[status] || status // 未知状态显示原始值
+}
+
+onMounted(() => {
+    // 添加登录状态校验
+    fetchOrders();
+});
+// 初始化数据加载
+// 修改后的初始化加载
+// onMounted(async () => {
+//     try {
+//         const userId = myget.userId; // 从Pinia状态获取用户ID
+//         console.log('用户ID:', userId);
+//         if (!userId) {
+//             userId = '45c4c2cb-4f2c-44f5-839a-92c8f900-3e12-43bb-ba43-7c23e5a4aea9';
+//         }
+//         // 方式1：使用路径参数
+//         const ordersRes = await axios.get(`/api/mypage/orders/${userId}`);
+//         orders.value = ordersRes.data.map(order => ({
+//             id: order.id,
+//             date: formatDate(order.createTime), // 格式化工单日期
+//             status: this.translateStatus(order.status) // 状态码转中文
+//         }));
+//     } catch (error) {
+//         console.error('订单加载失败:', error);
+//         alert('订单加载失败，请检查网络');
+//     }
+// });
 
 // 地址更新逻辑
 const submitAddress = async () => {
     try {
-        await axios.post('/api/mypage/address', {
-            address: newAddress.value
+        // 1. 创建表单编码参数
+        const params = new URLSearchParams()
+        params.append('userId', 'af306b72-15e6-496d-a68e-a4f3772dde0f') // 从Pinia状态获取真实用户ID
+        params.append('newAddress', newAddress.value) // 使用用户输入的真实地址
+
+        // 2. 发送规范请求
+        await axios.post('/api/mypage/address', params, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // 匹配后端@RequestParam
+            }
         })
+        // await axios.post('/api/mypage/address', {
+        //     userId: 'af306b72-15e6-496d-a68e-a4f3772dde0f',
+        //     newAddress: 'dsakasdjsadk'
+        // })
         user.value.address = newAddress.value
         newAddress.value = ''
     } catch (error) {
