@@ -71,7 +71,7 @@ onMounted(async () => {
     console.log(goods);
     console.log(goods.length);
   } catch (error) {
-    console.error('获取商品列表失败:', error);
+    console.error('获取租房列表失败:', error);
   }
 });
 const loadedGoods = computed(() => {

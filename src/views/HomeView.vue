@@ -30,7 +30,7 @@
 
         <div class="utility">
           <router-link v-if="id" :to="`/seller/${id}`">卖家中心</router-link>
-          <a href="/cart">购物车</a>
+          <a href="/cart">租房</a>
           <router-link to="/customerService">消息</router-link>
         </div>
       </header>
@@ -46,11 +46,11 @@
 <!--        </div>-->
 
         <div class="categories">
-          <a href="/goods/1" class="category">书写</a>
-          <a href="/goods/2" class="category">书法</a>
-          <a href="/goods/3" class="category">绘画</a>
-          <a href="/goods/4" class="category">儿童</a>
-          <a href="/goods/5" class="category">相关</a>
+          <a href="/goods/1" class="category">北京</a>
+          <a href="/goods/2" class="category">上海</a>
+          <a href="/goods/3" class="category">广州</a>
+          <a href="/goods/4" class="category">成都</a>
+          <a href="/goods/5" class="category">其他</a>
         </div>
       </div>
 
