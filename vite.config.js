@@ -52,13 +52,13 @@ export default defineConfig({
     }
   },
   //跨域请求
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
-      }
-    },
-  }
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:8080',
+  //       changeOrigin: true,
+  //       rewrite: path => path.replace(/^\/api/, '')
+  //     }
+  //   },
+  // }
 })
